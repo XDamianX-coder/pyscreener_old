@@ -10,7 +10,8 @@ from pyscreener.preprocessing import preprocess
 from pyscreener.postprocessing import postprocess
 
 # Handle versioneer
-from pyscreener._version import get_versions
+#Comment
+#from pyscreener._version import get_versions
 versions = get_versions()
 __version__ = versions['version']
 __git_revision__ = versions['full-revisionid']
