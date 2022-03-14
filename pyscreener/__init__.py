@@ -12,10 +12,10 @@ from pyscreener.postprocessing import postprocess
 # Handle versioneer
 #Comment
 #from pyscreener._version import get_versions
-versions = get_versions()
-__version__ = versions['version']
-__git_revision__ = versions['full-revisionid']
-del get_versions, versions
+#versions = get_versions()
+#__version__ = versions['version']
+#__git_revision__ = versions['full-revisionid']
+#del get_versions, versions
 
 def build_screener(mode, **kwargs) -> Tuple[Dict, List]:
     if mode == 'docking':
