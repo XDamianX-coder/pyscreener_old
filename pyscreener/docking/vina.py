@@ -142,7 +142,6 @@ class Vina(Screener):
     def prepare_from_smi(smi: str, name: str = 'ligand',
                          path: str = '.', **kwargs) -> Optional[Tuple]:
         """Prepare an input ligand file from the ligand's SMILES string
-
         Parameters
         ----------
         smi : str
@@ -153,7 +152,6 @@ class Vina(Screener):
             the path under which the output PDBQT file should be written
         **kwargs
             additional and unused keyword arguments
-
         Returns
         -------
         smi : str
@@ -172,13 +170,22 @@ class Vina(Screener):
             rdkitOptimized = False
 
         if rdkitOptimized:
-            mol = Chem.MolFromSmiles(smi)
-            mol = Chem.AddHs(mol)
-            AllChem.EmbedMolecule(mol, randomSeed=0xf00d)
-            mol.GetNumConformers()
-            AllChem.UFFOptimizeMolecule(mol, maxIters=3000)
-            Chem.MolToMolFile(mol, 'tmptmptmp.mol')
-            mol = next(pybel.readfile(filename='tmptmptmp.mol', format='mol'))
+            try:
+                mol = Chem.MolFromSmiles(smi)
+                mol = Chem.AddHs(mol)
+                AllChem.EmbedMolecule(mol, randomSeed=0xf00d)
+                mol.GetNumConformers()
+                try:
+                    AllChem.UFFOptimizeMolecule(mol, maxIters=3000)
+                    Chem.MolToMolFile(mol, 'tmptmptmp.mol')
+                    mol = next(pybel.readfile(filename='tmptmptmp.mol', format='mol'))
+                except:
+                    pass
+            except:
+                
+                mol = pybel.readstring(format='smi', string=smi)
+                mol.addh()
+                mol.make3D(forcefield='uff', steps=5000)
         else:
             mol = pybel.readstring(format='smi', string=smi)
             mol.addh()
